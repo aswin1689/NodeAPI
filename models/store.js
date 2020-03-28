@@ -9,8 +9,9 @@ const storeSchema = new Schema({
 		state: String,
 		zip: Number
 	},
+	phone: String,
 	location: { lat: Number, long: Number },
-	products: [String]
+	productsInStock: [String]
 });
 
 const Store = mongoose.model('store', storeSchema);

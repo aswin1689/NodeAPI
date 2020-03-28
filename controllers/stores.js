@@ -19,11 +19,10 @@ module.exports = {
 	},
 
 	getStoreWithItemsInStock: async (req, res, next) => {
-		let products = req.query.list;
-
+		let productsList = req.query.products.split(',');
 		const store = await Store.find({
-			products: {
-				$all: JSON.parse(products)
+			productsInStock: {
+				$in: productsList
 			}
 		});
 		res.status(200).json(store);
@@ -36,15 +35,8 @@ module.exports = {
 		res.status(200).json({ success: true });
 	},
 
-	updateStore: async (req, res, next) => {
-		const { storeId } = req.value.params;
-		const newStore = req.value.body;
-		const store = await Store.findByIdAndUpdate(storeId, newStore);
-		res.status(200).json({ success: true });
-	},
-
 	deleteStore: async (req, res, next) => {
-		const { storeId } = req.value.params;
+        const { storeId } = req.value.params;
 		await Store.findByIdAndRemove(storeId);
 		res.status(200).json({
 			message: 'store deleted successfully'

@@ -15,7 +15,7 @@ router
 	.post(validateBody(schemas.userSchema), UsersController.newUser);
 
 router
-	.route('users/:userId')
+	.route('/users/:userId')
 	.get(validateParam(schemas.idSchema, 'userId'), UsersController.getUser)
 	.put(
 		[
@@ -37,7 +37,7 @@ router
 	);
 
 router
-	.route('users/:userId/products')
+	.route('/users/:userId/products')
 	.get(
 		validateParam(schemas.idSchema, 'userId'),
 		UsersController.getUserProducts
@@ -58,7 +58,7 @@ router
 router.route('/inStockStores').get(StoresController.getStoreWithItemsInStock);
 
 router
-	.route('stores/:storeId')
+	.route('/stores/:storeId')
 	.get(validateParam(schemas.idSchema, 'storeId'), StoresController.getStore)
 	.put(
 		[

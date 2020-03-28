@@ -71,10 +71,11 @@ module.exports = {
 		}),
 		storeSchema: Joi.object().keys({
 			name: Joi.string().required(),
-			location: Joi.object().keys({
-        lat: Joi.number().required(),
-        long: Joi.number().required()
-      })
+			location: Joi.object()
+				.keys({
+					lat: Joi.number().required(),
+					long: Joi.number().required()
+				})
 				.required(),
 			address: Joi.object()
 				.keys({
@@ -84,8 +85,9 @@ module.exports = {
 					zip: Joi.number().required()
 				})
 				.required(),
-			products: Joi.array()
-				.items(Joi.string().required())
+			phone: Joi.string().required(),
+			productsInStock: Joi.array()
+				.items(Joi.string())
 				.required()
 		})
 	}
