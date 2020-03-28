@@ -32,7 +32,7 @@ module.exports = {
 						coordinates: [latitude, longitude]
 					},
 					spherical: true,
-					maxDistance: 10 * 1609.34,
+					maxDistance: 25 * 1609.34,
 					distanceMultiplier: 1 / 1609.34,
 					distanceField: 'distance'
 				}

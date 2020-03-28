@@ -2,7 +2,8 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const storeSchema = new Schema({
-	name: String,
+	storeManagerName: String,
+	storeName: String,
 	address: {
 		street: String,
 		city: String,
@@ -10,6 +11,10 @@ const storeSchema = new Schema({
 		zip: Number
 	},
 	phone: String,
+	businessHours: {
+		open: String,
+		close: String
+	},
 	location: {
 		type: {
 			type: String,

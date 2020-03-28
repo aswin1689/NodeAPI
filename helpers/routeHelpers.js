@@ -70,7 +70,8 @@ module.exports = {
 				.required()
 		}),
 		storeSchema: Joi.object().keys({
-			name: Joi.string().required(),
+			storeManagerName: Joi.string().required(),
+			storeName: Joi.string().required(),
 			location: Joi.object()
 				.keys({
 					type: Joi.string()
@@ -96,6 +97,10 @@ module.exports = {
 					zip: Joi.number().required()
 				})
 				.required(),
+			businessHours: Joi.object().keys({
+				open: Joi.string().required(),
+				close: Joi.string().required()
+			}),
 			phone: Joi.string().required(),
 			productsInStock: Joi.array()
 				.items(Joi.string())
