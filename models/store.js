@@ -10,9 +10,21 @@ const storeSchema = new Schema({
 		zip: Number
 	},
 	phone: String,
-	location: { lat: Number, long: Number },
+	location: {
+		type: {
+			type: String,
+			enum: ['Point'],
+			required: true
+		},
+		coordinates: {
+			type: [Number],
+			required: true
+		}
+	},
 	productsInStock: [String]
 });
+
+storeSchema.index({ location: '2dsphere' });
 
 const Store = mongoose.model('store', storeSchema);
 module.exports = Store;

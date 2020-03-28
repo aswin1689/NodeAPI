@@ -20,11 +20,31 @@ module.exports = {
 
 	getStoreWithItemsInStock: async (req, res, next) => {
 		let productsList = req.query.products.split(',');
-		const store = await Store.find({
-			productsInStock: {
-				$in: productsList
+		let location = req.query.location.split(',');
+		const latitude = parseFloat(location[0]);
+		const longitude = parseFloat(location[1]);
+
+		const store = await Store.aggregate([
+			{
+				$geoNear: {
+					near: {
+						type: 'Point',
+						coordinates: [latitude, longitude]
+					},
+					spherical: true,
+					maxDistance: 10 * 1609.34,
+					distanceMultiplier: 1 / 1609.34,
+					distanceField: 'distance'
+				}
+			},
+			{
+				$match: {
+					productsInStock: {
+						$in: productsList
+					}
+				}
 			}
-		});
+		]);
 		res.status(200).json(store);
 	},
 
@@ -36,7 +56,7 @@ module.exports = {
 	},
 
 	deleteStore: async (req, res, next) => {
-        const { storeId } = req.value.params;
+		const { storeId } = req.value.params;
 		await Store.findByIdAndRemove(storeId);
 		res.status(200).json({
 			message: 'store deleted successfully'

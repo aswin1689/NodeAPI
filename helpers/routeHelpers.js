@@ -73,10 +73,21 @@ module.exports = {
 			name: Joi.string().required(),
 			location: Joi.object()
 				.keys({
-					lat: Joi.number().required(),
-					long: Joi.number().required()
+					type: Joi.string()
+						.required()
+						.valid(['Point']),
+					coordinates: Joi.array().ordered([
+						Joi.number()
+							.min(-90)
+							.max(90)
+							.required(),
+						Joi.number()
+							.min(-180)
+							.max(180)
+							.required()
+					])
 				})
-				.required(),
+				.description('Please use this format [latitude, longitude]'),
 			address: Joi.object()
 				.keys({
 					street: Joi.string().required(),

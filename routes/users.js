@@ -55,7 +55,7 @@ router
 	.get(StoresController.index)
 	.post(validateBody(schemas.storeSchema), StoresController.newStore);
 
-router.route('/inStockStores').get(StoresController.getStoreWithItemsInStock);
+router.route('/stores/inStock').get(StoresController.getStoreWithItemsInStock);
 
 router
 	.route('/stores/:storeId')

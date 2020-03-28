@@ -4,7 +4,9 @@ const mongoose = require('mongoose');
 const helmet = require('helmet');
 
 mongoose.connect('mongodb://localhost/nodeapiproject', {
-	useNewUrlParser: true
+	useCreateIndex: true,
+	useNewUrlParser: true,
+	useUnifiedTopology: true
 });
 mongoose.set('useFindAndModify', false);
 
