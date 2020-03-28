@@ -12,7 +12,7 @@ const app = express();
 
 app.use(helmet());
 
-// Routes
+// Routes test
 const users = require('./routes/users');
 
 //middleware
