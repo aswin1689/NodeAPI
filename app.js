@@ -20,7 +20,7 @@ app.use(logger('dev'));
 app.use(express.json());
 
 //routes
-app.use('/api/users', users);
+app.use('/api', users);
 
 //catch 404 errors and route them to error handler
 app.use((req, res, next) => {
