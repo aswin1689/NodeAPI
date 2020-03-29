@@ -1,15 +1,10 @@
+var union = require('lodash/union');
 const Store = require('../models/store');
 
 module.exports = {
 	index: async (req, res, next) => {
 		const store = await Store.find({});
 		res.status(200).json(store);
-	},
-
-	newStore: async (req, res, next) => {
-		const newStore = new Store(req.value.body);
-		const store = await newStore.save();
-		res.status(201).json(store);
 	},
 
 	getStore: async (req, res, next) => {
@@ -39,7 +34,7 @@ module.exports = {
 			},
 			{
 				$match: {
-					productsInStock: {
+					'products.inStock': {
 						$in: productsList
 					}
 				}
@@ -48,10 +43,44 @@ module.exports = {
 		res.status(200).json(store);
 	},
 
-	replaceStore: async (req, res, next) => {
+	createStore: async (req, res, next) => {
+		// const requestBody = req.value.body;
+		// const coordinates = requestBody.location.coordinates;
+		// const latitude = coordinates[0];
+		// const longitude = coordinates[1];
+
+		// const existingStore = await Store.find({
+		// 	'location.coordinates': { $eq: [latitude, longitude] }
+		// });
+
+		// const updatedProductsList =
+		// 	existingStore.length > 0
+		// 		? union(
+		// 				existingStore[0].productsInStock,
+		// 				requestBody.productsInStock
+		// 		  )
+		// 		: requestBody.productsInStock;
+
+		// 		console.log(updatedProductsList)
+
+		// const store = await Store.findOneAndUpdate(
+		// 	{ 'location.coordinates': { $eq: [latitude, longitude] } },
+		// 	{ $set: { productsInStock: updatedProductsList } },
+		// 	{ upsert: true },
+		// 	function(err, doc) {
+		// 		if (err) return res.send(500, { error: err });
+		// 		return res.send('Successfully saved.');
+		// 	}
+		// );
+		const newStore = new Store(req.value.body);
+		const store = await newStore.save();
+		res.status(201).json(store);
+	},
+
+	updateStore: async (req, res, next) => {
 		const { storeId } = req.value.params;
-		const newStore = req.value.body;
-		const store = await Store.findByIdAndUpdate(storeId, newStore);
+		const createStore = req.value.body;
+		const store = await Store.findByIdAndUpdate(storeId, createStore);
 		res.status(200).json({ success: true });
 	},
 

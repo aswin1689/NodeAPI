@@ -70,7 +70,6 @@ module.exports = {
 				.required()
 		}),
 		storeSchema: Joi.object().keys({
-			storeManagerName: Joi.string().required(),
 			storeName: Joi.string().required(),
 			location: Joi.object()
 				.keys({
@@ -102,9 +101,14 @@ module.exports = {
 				close: Joi.string().required()
 			}),
 			phone: Joi.string().required(),
-			productsInStock: Joi.array()
-				.items(Joi.string())
-				.required()
+			products: Joi.object().keys({
+				inStock: Joi.array()
+					.items(Joi.string())
+					.required(),
+				outOfStock: Joi.array()
+					.items(Joi.string())
+					.required()
+			})
 		})
 	}
 };

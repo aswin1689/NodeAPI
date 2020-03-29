@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const storeSchema = new Schema({
-	storeManagerName: String,
 	storeName: String,
 	address: {
 		street: String,
@@ -26,7 +25,10 @@ const storeSchema = new Schema({
 			required: true
 		}
 	},
-	productsInStock: [String]
+	products: {
+		inStock: [String],
+		outOfStock: [String]
+	}
 });
 
 storeSchema.index({ location: '2dsphere' });

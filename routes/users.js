@@ -53,7 +53,7 @@ router
 router
 	.route('/stores')
 	.get(StoresController.index)
-	.post(validateBody(schemas.storeSchema), StoresController.newStore);
+	.post(validateBody(schemas.storeSchema), StoresController.createStore);
 
 router.route('/stores/inStock').get(StoresController.getStoreWithItemsInStock);
 
@@ -65,7 +65,7 @@ router
 			validateParam(schemas.idSchema, 'storeId'),
 			validateBody(schemas.storeSchema)
 		],
-		StoresController.replaceStore
+		StoresController.updateStore
 	)
 	.delete(
 		validateParam(schemas.idSchema, 'storeId'),
