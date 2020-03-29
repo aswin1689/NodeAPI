@@ -1,4 +1,5 @@
 var union = require('lodash/union');
+var difference = require('lodash/difference');
 const Store = require('../models/store');
 
 module.exports = {
@@ -44,37 +45,51 @@ module.exports = {
 	},
 
 	createStore: async (req, res, next) => {
-		// const requestBody = req.value.body;
-		// const coordinates = requestBody.location.coordinates;
-		// const latitude = coordinates[0];
-		// const longitude = coordinates[1];
+		const requestBody = req.value.body;
+		const coordinates = requestBody.location.coordinates;
+		const latitude = coordinates[0];
+		const longitude = coordinates[1];
 
-		// const existingStore = await Store.find({
-		// 	'location.coordinates': { $eq: [latitude, longitude] }
-		// });
+		const existingStore = await Store.find({
+			'location.coordinates': { $eq: [latitude, longitude] }
+		});
 
-		// const updatedProductsList =
-		// 	existingStore.length > 0
-		// 		? union(
-		// 				existingStore[0].productsInStock,
-		// 				requestBody.productsInStock
-		// 		  )
-		// 		: requestBody.productsInStock;
+		if (existingStore.length > 0) {
+			const updatedInStockList = difference(
+				union(
+					existingStore[0].products.inStock,
+					requestBody.products.inStock
+				),
+				requestBody.products.outOfStock
+			);
 
-		// 		console.log(updatedProductsList)
+			const updatedOutOfStockList = difference(
+				union(
+					existingStore[0].products.outOfStock,
+					requestBody.products.outOfStock
+				),
+				requestBody.products.inStock
+			);
 
-		// const store = await Store.findOneAndUpdate(
-		// 	{ 'location.coordinates': { $eq: [latitude, longitude] } },
-		// 	{ $set: { productsInStock: updatedProductsList } },
-		// 	{ upsert: true },
-		// 	function(err, doc) {
-		// 		if (err) return res.send(500, { error: err });
-		// 		return res.send('Successfully saved.');
-		// 	}
-		// );
-		const newStore = new Store(req.value.body);
-		const store = await newStore.save();
-		res.status(201).json(store);
+			const updatedProductsList = {
+				inStock: updatedInStockList,
+				outOfStock: updatedOutOfStockList
+			};
+
+			const store = await Store.findOneAndUpdate(
+				{ 'location.coordinates': { $eq: [latitude, longitude] } },
+				{ $set: { products: updatedProductsList } },
+				{ upsert: true, new: true, runValidators: true },
+				function(err, doc) {
+					if (err) return res.send(500, { error: err });
+					return res.send('Successfully saved.');
+				}
+			);
+		} else {
+			const newStore = new Store(req.value.body);
+			const store = await newStore.save();
+			res.status(201).json(store);
+		}
 	},
 
 	updateStore: async (req, res, next) => {
