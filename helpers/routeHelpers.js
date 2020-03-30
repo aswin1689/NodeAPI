@@ -88,18 +88,8 @@ module.exports = {
 					])
 				})
 				.description('Please use this format [latitude, longitude]'),
-			address: Joi.object()
-				.keys({
-					street: Joi.string().required(),
-					city: Joi.string().required(),
-					state: Joi.string().required(),
-					zip: Joi.number().required()
-				})
-				.required(),
-			businessHours: Joi.object().keys({
-				open: Joi.string().required(),
-				close: Joi.string().required()
-			}),
+			address: Joi.string().required(),
+			businessHours: Joi.array().items(Joi.string()),
 			phone: Joi.string().required(),
 			products: Joi.object().keys({
 				inStock: Joi.array()

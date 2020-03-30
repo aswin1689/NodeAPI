@@ -3,17 +3,9 @@ const Schema = mongoose.Schema;
 
 const storeSchema = new Schema({
 	storeName: String,
-	address: {
-		street: String,
-		city: String,
-		state: String,
-		zip: Number
-	},
+	address: String,
 	phone: String,
-	businessHours: {
-		open: String,
-		close: String
-	},
+	businessHours: [String],
 	location: {
 		type: {
 			type: String,

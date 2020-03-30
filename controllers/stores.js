@@ -81,8 +81,10 @@ module.exports = {
 				{ $set: { products: updatedProductsList } },
 				{ upsert: true, new: true, runValidators: true },
 				function(err, doc) {
-					if (err) return res.send(500, { error: err });
-					return res.send('Successfully saved.');
+					if (err) return res.send(500, { message: err });
+					return res
+						.status(200)
+						.json({ message: 'successfully updated the store' });
 				}
 			);
 		} else {
